@@ -86,10 +86,8 @@ def init(canvas):
     canvas.data["pressedLetters"] = [ ]
     redrawAll(canvas)
 
-########### copy-paste below here ###########
-
 def run():
-
+    # Mettre ici l'adresse bluetooth du iRacer
     bd_addr = "00:12:05:09:98:43"
     port = 1
     sock.connect((bd_addr, port))
