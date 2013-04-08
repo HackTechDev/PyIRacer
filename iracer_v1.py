@@ -8,21 +8,51 @@ import tty
 import termios
 import bluetooth
 import time
+from evdev import InputDevice, categorize, ecodes
 from Tkinter import *
 
+sock = bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 
 def eventInfo(eventName, char, keysym, ctrl, shift):
     msg = "[" + char + "] " 
     if char == "z":
-         msg += "Avancer"
+        msg += "Avancer Droit"
+	sock.send('\x1A')
+	time.sleep(0.5);
+	sock.send('\x00')
     elif char == "s":
-         msg += "Reculer"
+        msg += "Reculer Droit"
+	sock.send('\x2A')
+	time.sleep(0.5);
+	sock.send('\x00')
     elif char == "q":
-         msg += "Gauche"
+        msg += "Avancer Gauche"
+	sock.send('\x5A')
+        time.sleep(0.5);
+        sock.send('\x00')
+	sock.send('\x3A')
     elif char == "d":
-        msg += "Droite"
+        msg += "Avancer Droite"
+	sock.send('\x6A')
+        time.sleep(0.5);
+        sock.send('\x00')
+	sock.send('\x4A')
+    elif char == "w":
+        msg += "Reculer Gauche"
+	sock.send('\x7A')
+        time.sleep(0.5);
+        sock.send('\x00')
+	sock.send('\x3A')
+    elif char == "c":
+        msg += "Reculer Droite"
+	sock.send('\x8A')
+        time.sleep(0.5);
+        sock.send('\x00')
+	sock.send('\x4A')
+
     elif char == "a":
         msg += "Arreter"
+	sock.send('\x00')
     else:
 	msg += "Inconnu"	
 
@@ -56,6 +86,10 @@ def init(canvas):
     redrawAll(canvas)
 
 def run():
+
+    bd_addr = "00:12:05:09:98:43"
+    port = 1
+    sock.connect((bd_addr, port))
     
     root = Tk()
     root.title("Controleur iRacer")
